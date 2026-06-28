@@ -83,6 +83,7 @@ async function migrate() {
   await addColumnIfMissing('matches', 'source_key', 'VARCHAR(150)');
   await addColumnIfMissing('matches', 'last_synced_at', 'TIMESTAMP');
   await addColumnIfMissing('matches', 'updated_at', 'TIMESTAMP DEFAULT NOW()');
+  await addColumnIfMissing('users', 'grace_until', 'TIMESTAMP');
 
   const { rows } = await pool.query('SELECT COUNT(*) FROM matches');
   if (parseInt(rows[0].count, 10) === 0) {

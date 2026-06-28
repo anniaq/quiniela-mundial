@@ -670,6 +670,26 @@ function LeaderboardList({ compact = false, leaderboard, onSelect }) {
 function AdminPanel({ api, config, matches, onSaved, onSync }) {
   const [drafts, setDrafts] = useState({});
   const [saving, setSaving] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [graceMinutes, setGraceMinutes] = useState(10);
+  const [graceBusy, setGraceBusy] = useState(null);
+
+  useEffect(() => {
+    api('/api/admin/users').then(setUsers).catch(() => {});
+  }, []);
+
+  async function grantGrace(userId) {
+    setGraceBusy(userId);
+    try {
+      const updated = await api(`/api/admin/users/${userId}/grace`, {
+        method: 'POST',
+        body: JSON.stringify({ minutes: graceMinutes }),
+      });
+      setUsers((current) => current.map((u) => (u.id === updated.id ? { ...u, grace_until: updated.grace_until } : u)));
+    } finally {
+      setGraceBusy(null);
+    }
+  }
 
   useEffect(() => {
     setDrafts(
@@ -724,6 +744,51 @@ function AdminPanel({ api, config, matches, onSaved, onSync }) {
           Sincronizar {config.sync?.provider || 'manual'}
         </button>
       </div>
+
+      {users.length > 0 && (
+        <div className="grace-panel">
+          <div className="section-heading compact">
+            <div>
+              <p className="microcopy">Tiempo extra</p>
+              <h3>Dar acceso a predicciones bloqueadas</h3>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <input
+                className="tiny-input"
+                min="1" max="120" type="number"
+                value={graceMinutes}
+                onChange={(e) => setGraceMinutes(Number(e.target.value))}
+                style={{ width: 56 }}
+              />
+              <span className="microcopy">min</span>
+            </div>
+          </div>
+          <div className="grace-list">
+            {users.filter((u) => !u.is_admin).map((u) => {
+              const active = u.grace_until && new Date(u.grace_until) > new Date();
+              return (
+                <div key={u.id} className="grace-row">
+                  <span className="grace-name">{u.name}</span>
+                  {active && (
+                    <span className="grace-badge">
+                      <Clock3 size={12} />
+                      hasta {formatDate(u.grace_until)}
+                    </span>
+                  )}
+                  <button
+                    className="ghost-button"
+                    disabled={graceBusy === u.id}
+                    onClick={() => grantGrace(u.id)}
+                  >
+                    {graceBusy === u.id ? <RefreshCcw size={14} /> : <Clock3 size={14} />}
+                    {active ? 'Extender' : `+${graceMinutes} min`}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="admin-list">
         {matches.map((match) => {

@@ -189,7 +189,13 @@ app.post('/api/predictions/:match_id', authMiddleware, async (req, res) => {
 
   if (!match) return res.status(404).json({ error: 'Partido no encontrado' });
   if (match.locked || match.status !== 'upcoming') {
-    return res.status(400).json({ error: 'Ya no se pueden modificar predicciones para este partido' });
+    const { rows: graceRows } = await pool.query(
+      'SELECT grace_until FROM users WHERE id = $1', [req.user.id]
+    );
+    const grace = graceRows[0]?.grace_until;
+    if (!grace || new Date(grace) < new Date()) {
+      return res.status(400).json({ error: 'Ya no se pueden modificar predicciones para este partido' });
+    }
   }
 
   try {
@@ -232,6 +238,25 @@ app.get('/api/leaderboard/:user_id', authMiddleware, async (req, res) => {
       };
     })
   );
+});
+
+app.get('/api/admin/users', authMiddleware, adminMiddleware, async (req, res) => {
+  const { rows } = await pool.query(
+    'SELECT id, name, username, is_admin, grace_until FROM users ORDER BY name'
+  );
+  res.json(rows);
+});
+
+app.post('/api/admin/users/:id/grace', authMiddleware, adminMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const minutes = Math.max(1, Math.min(120, parseInt(req.body.minutes || '10', 10)));
+  const { rows } = await pool.query(
+    `UPDATE users SET grace_until = NOW() + ($1 || ' minutes')::interval
+     WHERE id = $2 RETURNING id, name, grace_until`,
+    [minutes, id]
+  );
+  if (!rows[0]) return res.status(404).json({ error: 'Usuario no encontrado' });
+  res.json(rows[0]);
 });
 
 app.post('/api/sync/results', syncAuthMiddleware, runSync);
