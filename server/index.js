@@ -162,15 +162,13 @@ app.get('/api/predictions', authMiddleware, async (req, res) => {
 app.get('/api/predictions/all', authMiddleware, async (req, res) => {
   const myId = req.user.id;
   const { rows: users } = await pool.query('SELECT id, name FROM users ORDER BY name');
-  // Return predictions from all users only for matches that are locked or the requester has already predicted
+  // Only reveal predictions once the match is locked (round closed)
   const { rows: predictions } = await pool.query(
     `SELECT p.match_id, p.user_id, u.name AS user_name, p.pred_score1, p.pred_score2, p.pred_scorers
      FROM predictions p
      JOIN users u ON u.id = p.user_id
      WHERE p.match_id IN (
-       SELECT id FROM matches WHERE locked = TRUE
-       UNION
-       SELECT match_id FROM predictions WHERE user_id = $1
+       SELECT id FROM matches WHERE locked = TRUE OR status IN ('live', 'finished')
      )
      ORDER BY p.match_id, u.name`,
     [myId]

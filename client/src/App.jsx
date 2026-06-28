@@ -822,7 +822,7 @@ function AllPicksView({ activeRound, allPicksData, config, matches, predictionsB
       <div className="match-list">
         {roundMatches.map((match) => {
           const myPick = predictionsByMatch[match.id];
-          const visible = myPick || match.locked || match.status !== 'upcoming';
+          const visible = match.locked || match.status !== 'upcoming';
           const picks = predsByMatch[match.id] || [];
 
           return (
