@@ -259,6 +259,30 @@ app.post('/api/admin/users/:id/grace', authMiddleware, adminMiddleware, async (r
   res.json(rows[0]);
 });
 
+app.post('/api/admin/users/:id/predictions', syncAuthMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const { predictions } = req.body; // [{match_id, pred_score1, pred_score2, pred_scorers}]
+  if (!Array.isArray(predictions) || predictions.length === 0) {
+    return res.status(400).json({ error: 'Se requiere un array de predicciones' });
+  }
+  const saved = [];
+  for (const p of predictions) {
+    const s1 = parseInt(p.pred_score1, 10);
+    const s2 = parseInt(p.pred_score2, 10);
+    if (!Number.isInteger(s1) || !Number.isInteger(s2)) continue;
+    const { rows } = await pool.query(
+      `INSERT INTO predictions (user_id, match_id, pred_score1, pred_score2, pred_scorers)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (user_id, match_id)
+       DO UPDATE SET pred_score1=$3, pred_score2=$4, pred_scorers=$5, updated_at=NOW()
+       RETURNING *`,
+      [id, p.match_id, s1, s2, parseTextArray(p.pred_scorers)]
+    );
+    if (rows[0]) saved.push(rows[0]);
+  }
+  res.json({ saved: saved.length, predictions: saved });
+});
+
 app.post('/api/admin/grace/all', syncAuthMiddleware, async (req, res) => {
   const minutes = Math.max(1, Math.min(120, parseInt(req.body.minutes || '10', 10)));
   const { rows } = await pool.query(
