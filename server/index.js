@@ -259,6 +259,16 @@ app.post('/api/admin/users/:id/grace', authMiddleware, adminMiddleware, async (r
   res.json(rows[0]);
 });
 
+app.post('/api/admin/grace/all', syncAuthMiddleware, async (req, res) => {
+  const minutes = Math.max(1, Math.min(120, parseInt(req.body.minutes || '10', 10)));
+  const { rows } = await pool.query(
+    `UPDATE users SET grace_until = NOW() + ($1 || ' minutes')::interval
+     WHERE is_admin = FALSE RETURNING id, name, grace_until`,
+    [minutes]
+  );
+  res.json({ updated: rows.length, users: rows, until: rows[0]?.grace_until });
+});
+
 app.post('/api/sync/results', syncAuthMiddleware, runSync);
 app.get('/api/sync/results', syncAuthMiddleware, runSync);
 
