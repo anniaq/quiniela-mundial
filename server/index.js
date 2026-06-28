@@ -160,7 +160,6 @@ app.get('/api/predictions', authMiddleware, async (req, res) => {
 });
 
 app.get('/api/predictions/all', authMiddleware, async (req, res) => {
-  const myId = req.user.id;
   const { rows: users } = await pool.query('SELECT id, name FROM users ORDER BY name');
   // Only reveal predictions once the match is locked (round closed)
   const { rows: predictions } = await pool.query(
@@ -170,8 +169,7 @@ app.get('/api/predictions/all', authMiddleware, async (req, res) => {
      WHERE p.match_id IN (
        SELECT id FROM matches WHERE locked = TRUE OR status IN ('live', 'finished')
      )
-     ORDER BY p.match_id, u.name`,
-    [myId]
+     ORDER BY p.match_id, u.name`
   );
   res.json({ users, predictions });
 });
