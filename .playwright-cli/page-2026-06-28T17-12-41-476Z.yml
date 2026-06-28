@@ -1,0 +1,41 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e7]: 🏆
+      - generic [ref=e8]:
+        - paragraph [ref=e9]: Quiniela Mundial 2026
+        - heading "Marcadores, goleadores y pique familiar en una sola tabla." [level=1] [ref=e10]
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]: Ganador
+        - strong [ref=e14]: 3 pts
+      - generic [ref=e15]:
+        - generic [ref=e16]: Marcador por equipo
+        - strong [ref=e17]: 1 + 1
+      - generic [ref=e18]:
+        - generic [ref=e19]: Goleador acertado
+        - strong [ref=e20]: 1 pt
+      - generic [ref=e21]:
+        - generic [ref=e22]: Maximo por partido
+        - strong [ref=e23]: 6 pts
+  - generic [ref=e24]:
+    - generic [ref=e25]:
+      - button "👥 Entrar" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: 👥
+        - text: Entrar
+      - button "👤 Crear usuario" [active] [ref=e28] [cursor=pointer]:
+        - generic [ref=e29]: 👤
+        - text: Crear usuario
+    - generic [ref=e37]:
+      - text: Nombre
+      - textbox "Nombre" [ref=e38]
+    - generic [ref=e30]:
+      - text: Usuario
+      - textbox "Usuario" [ref=e31]
+    - generic [ref=e32]:
+      - text: Contrasena
+      - textbox "Contrasena" [ref=e33]
+    - button "🛡 Crear cuenta" [ref=e39] [cursor=pointer]:
+      - generic [ref=e35]: 🛡
+      - text: Crear cuenta
+    - paragraph [ref=e36]: El primer usuario registrado queda como administrador.

@@ -1,0 +1,406 @@
+- generic [ref=e40]:
+  - complementary [ref=e41]:
+    - generic [ref=e42]:
+      - generic [ref=e44]: 🏆
+      - generic [ref=e45]:
+        - strong [ref=e46]: Quiniela
+        - generic [ref=e47]: Admin Familiar
+    - navigation [ref=e48]:
+      - button "📅 Predicciones" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]: 📅
+        - text: Predicciones
+      - button "📊 Tabla" [ref=e51] [cursor=pointer]:
+        - generic [ref=e52]: 📊
+        - text: Tabla
+    - generic [ref=e53]:
+      - paragraph [ref=e54]: Sistema
+      - generic [ref=e55]:
+        - generic [ref=e56]: Ganador
+        - strong [ref=e57]: "3"
+      - generic [ref=e58]:
+        - generic [ref=e59]: Score por equipo
+        - strong [ref=e60]: "1"
+      - generic [ref=e61]:
+        - generic [ref=e62]: Goleador
+        - strong [ref=e63]: "1"
+      - generic [ref=e64]:
+        - generic [ref=e65]: Maximo
+        - strong [ref=e66]: "6"
+    - button "↩ Salir" [ref=e67] [cursor=pointer]:
+      - generic [ref=e68]: ↩
+      - text: Salir
+  - main [ref=e69]:
+    - generic [ref=e70]:
+      - generic [ref=e71]:
+        - paragraph [ref=e72]: Mundial 2026
+        - heading "Quiniela familiar" [level=1] [ref=e73]
+      - button "🔄" [ref=e75] [cursor=pointer]:
+        - generic [ref=e76]: 🔄
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - paragraph [ref=e80]: Partidos
+          - heading "Dieciseisavos" [level=2] [ref=e81]
+        - generic [ref=e82]:
+          - button "Dieciseisavos" [ref=e83] [cursor=pointer]
+          - button "Octavos" [ref=e84] [cursor=pointer]
+          - button "Cuartos" [ref=e85] [cursor=pointer]
+          - button "Semifinales" [ref=e86] [cursor=pointer]
+          - button "Tercer lugar" [ref=e87] [cursor=pointer]
+          - button "Final" [ref=e88] [cursor=pointer]
+      - generic [ref=e89]:
+        - article [ref=e90]:
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93]: ⏱
+              - generic [ref=e94]: 28 jun, 15:00
+            - generic [ref=e95]:
+              - generic [ref=e96]: ✅
+              - text: Finalizado
+          - generic [ref=e97]:
+            - generic [ref=e99]: Sudafrica
+            - strong [ref=e101]: 2 - 1
+            - generic [ref=e103]: Canada
+          - generic [ref=e104]:
+            - spinbutton "Goles de Sudafrica" [disabled] [ref=e105]
+            - spinbutton "Goles de Canada" [disabled] [ref=e106]
+            - textbox "Goleadores" [disabled] [ref=e107]:
+              - /placeholder: Goleadores separados por coma
+            - button "🔒 Guardar" [disabled] [ref=e108]:
+              - generic [ref=e109]: 🔒
+              - text: Guardar
+          - generic [ref=e111]: Los Angeles Stadium
+        - article [ref=e112]:
+          - generic [ref=e113]:
+            - generic [ref=e114]:
+              - generic [ref=e115]: ⏱
+              - generic [ref=e116]: 29 jun, 13:00
+            - generic [ref=e117]:
+              - generic [ref=e118]: ⏱
+              - text: Abierto
+          - generic [ref=e119]:
+            - generic [ref=e121]: Brasil
+            - generic [ref=e123]: vs
+            - generic [ref=e125]: Japon
+          - generic [ref=e126]:
+            - spinbutton "Goles de Brasil" [ref=e127]
+            - spinbutton "Goles de Japon" [ref=e128]
+            - textbox "Goleadores" [ref=e129]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e130] [cursor=pointer]:
+              - generic [ref=e131]: 💾
+              - text: Guardar
+          - generic [ref=e133]: Houston Stadium
+        - article [ref=e134]:
+          - generic [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]: ⏱
+              - generic [ref=e138]: 29 jun, 16:30
+            - generic [ref=e139]:
+              - generic [ref=e140]: ⏱
+              - text: Abierto
+          - generic [ref=e141]:
+            - generic [ref=e143]: Alemania
+            - generic [ref=e145]: vs
+            - generic [ref=e147]: Paraguay
+          - generic [ref=e148]:
+            - spinbutton "Goles de Alemania" [ref=e149]
+            - spinbutton "Goles de Paraguay" [ref=e150]
+            - textbox "Goleadores" [ref=e151]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e152] [cursor=pointer]:
+              - generic [ref=e153]: 💾
+              - text: Guardar
+          - generic [ref=e155]: Boston Stadium
+        - article [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - generic [ref=e159]: ⏱
+              - generic [ref=e160]: 29 jun, 21:00
+            - generic [ref=e161]:
+              - generic [ref=e162]: ⏱
+              - text: Abierto
+          - generic [ref=e163]:
+            - generic [ref=e165]: Paises Bajos
+            - generic [ref=e167]: vs
+            - generic [ref=e169]: Marruecos
+          - generic [ref=e170]:
+            - spinbutton "Goles de Paises Bajos" [ref=e171]
+            - spinbutton "Goles de Marruecos" [ref=e172]
+            - textbox "Goleadores" [ref=e173]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e174] [cursor=pointer]:
+              - generic [ref=e175]: 💾
+              - text: Guardar
+          - generic [ref=e177]: Monterrey Stadium
+        - article [ref=e178]:
+          - generic [ref=e179]:
+            - generic [ref=e180]:
+              - generic [ref=e181]: ⏱
+              - generic [ref=e182]: 30 jun, 13:00
+            - generic [ref=e183]:
+              - generic [ref=e184]: ⏱
+              - text: Abierto
+          - generic [ref=e185]:
+            - generic [ref=e187]: Costa de Marfil
+            - generic [ref=e189]: vs
+            - generic [ref=e191]: Noruega
+          - generic [ref=e192]:
+            - spinbutton "Goles de Costa de Marfil" [ref=e193]
+            - spinbutton "Goles de Noruega" [ref=e194]
+            - textbox "Goleadores" [ref=e195]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e196] [cursor=pointer]:
+              - generic [ref=e197]: 💾
+              - text: Guardar
+          - generic [ref=e199]: Dallas Stadium
+        - article [ref=e200]:
+          - generic [ref=e201]:
+            - generic [ref=e202]:
+              - generic [ref=e203]: ⏱
+              - generic [ref=e204]: 30 jun, 17:00
+            - generic [ref=e205]:
+              - generic [ref=e206]: ⏱
+              - text: Abierto
+          - generic [ref=e207]:
+            - generic [ref=e209]: Francia
+            - generic [ref=e211]: vs
+            - generic [ref=e213]: Suecia
+          - generic [ref=e214]:
+            - spinbutton "Goles de Francia" [ref=e215]
+            - spinbutton "Goles de Suecia" [ref=e216]
+            - textbox "Goleadores" [ref=e217]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e218] [cursor=pointer]:
+              - generic [ref=e219]: 💾
+              - text: Guardar
+          - generic [ref=e221]: New York New Jersey Stadium
+        - article [ref=e222]:
+          - generic [ref=e223]:
+            - generic [ref=e224]:
+              - generic [ref=e225]: ⏱
+              - generic [ref=e226]: 30 jun, 21:00
+            - generic [ref=e227]:
+              - generic [ref=e228]: ⏱
+              - text: Abierto
+          - generic [ref=e229]:
+            - generic [ref=e231]: Mexico
+            - generic [ref=e233]: vs
+            - generic [ref=e235]: Ecuador
+          - generic [ref=e236]:
+            - spinbutton "Goles de Mexico" [ref=e237]
+            - spinbutton "Goles de Ecuador" [ref=e238]
+            - textbox "Goleadores" [ref=e239]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e240] [cursor=pointer]:
+              - generic [ref=e241]: 💾
+              - text: Guardar
+          - generic [ref=e243]: Mexico City Stadium
+        - article [ref=e244]:
+          - generic [ref=e245]:
+            - generic [ref=e246]:
+              - generic [ref=e247]: ⏱
+              - generic [ref=e248]: 01 jul, 12:00
+            - generic [ref=e249]:
+              - generic [ref=e250]: ⏱
+              - text: Abierto
+          - generic [ref=e251]:
+            - generic [ref=e253]: Inglaterra
+            - generic [ref=e255]: vs
+            - generic [ref=e257]: RD Congo
+          - generic [ref=e258]:
+            - spinbutton "Goles de Inglaterra" [ref=e259]
+            - spinbutton "Goles de RD Congo" [ref=e260]
+            - textbox "Goleadores" [ref=e261]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e262] [cursor=pointer]:
+              - generic [ref=e263]: 💾
+              - text: Guardar
+          - generic [ref=e265]: Atlanta Stadium
+        - article [ref=e266]:
+          - generic [ref=e267]:
+            - generic [ref=e268]:
+              - generic [ref=e269]: ⏱
+              - generic [ref=e270]: 01 jul, 16:00
+            - generic [ref=e271]:
+              - generic [ref=e272]: ⏱
+              - text: Abierto
+          - generic [ref=e273]:
+            - generic [ref=e275]: Belgica
+            - generic [ref=e277]: vs
+            - generic [ref=e279]: Senegal
+          - generic [ref=e280]:
+            - spinbutton "Goles de Belgica" [ref=e281]
+            - spinbutton "Goles de Senegal" [ref=e282]
+            - textbox "Goleadores" [ref=e283]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e284] [cursor=pointer]:
+              - generic [ref=e285]: 💾
+              - text: Guardar
+          - generic [ref=e287]: Seattle Stadium
+        - article [ref=e288]:
+          - generic [ref=e289]:
+            - generic [ref=e290]:
+              - generic [ref=e291]: ⏱
+              - generic [ref=e292]: 01 jul, 20:00
+            - generic [ref=e293]:
+              - generic [ref=e294]: ⏱
+              - text: Abierto
+          - generic [ref=e295]:
+            - generic [ref=e297]: Estados Unidos
+            - generic [ref=e299]: vs
+            - generic [ref=e301]: Bosnia y Herzegovina
+          - generic [ref=e302]:
+            - spinbutton "Goles de Estados Unidos" [ref=e303]
+            - spinbutton "Goles de Bosnia y Herzegovina" [ref=e304]
+            - textbox "Goleadores" [ref=e305]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e306] [cursor=pointer]:
+              - generic [ref=e307]: 💾
+              - text: Guardar
+          - generic [ref=e309]: San Francisco Bay Stadium
+        - article [ref=e310]:
+          - generic [ref=e311]:
+            - generic [ref=e312]:
+              - generic [ref=e313]: ⏱
+              - generic [ref=e314]: 02 jul, 15:00
+            - generic [ref=e315]:
+              - generic [ref=e316]: ⏱
+              - text: Abierto
+          - generic [ref=e317]:
+            - generic [ref=e319]: Espana
+            - generic [ref=e321]: vs
+            - generic [ref=e323]: Austria
+          - generic [ref=e324]:
+            - spinbutton "Goles de Espana" [ref=e325]
+            - spinbutton "Goles de Austria" [ref=e326]
+            - textbox "Goleadores" [ref=e327]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e328] [cursor=pointer]:
+              - generic [ref=e329]: 💾
+              - text: Guardar
+          - generic [ref=e331]: Los Angeles Stadium
+        - article [ref=e332]:
+          - generic [ref=e333]:
+            - generic [ref=e334]:
+              - generic [ref=e335]: ⏱
+              - generic [ref=e336]: 02 jul, 19:00
+            - generic [ref=e337]:
+              - generic [ref=e338]: ⏱
+              - text: Abierto
+          - generic [ref=e339]:
+            - generic [ref=e341]: Portugal
+            - generic [ref=e343]: vs
+            - generic [ref=e345]: Croacia
+          - generic [ref=e346]:
+            - spinbutton "Goles de Portugal" [ref=e347]
+            - spinbutton "Goles de Croacia" [ref=e348]
+            - textbox "Goleadores" [ref=e349]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e350] [cursor=pointer]:
+              - generic [ref=e351]: 💾
+              - text: Guardar
+          - generic [ref=e353]: Toronto Stadium
+        - article [ref=e354]:
+          - generic [ref=e355]:
+            - generic [ref=e356]:
+              - generic [ref=e357]: ⏱
+              - generic [ref=e358]: 02 jul, 23:00
+            - generic [ref=e359]:
+              - generic [ref=e360]: ⏱
+              - text: Abierto
+          - generic [ref=e361]:
+            - generic [ref=e363]: Suiza
+            - generic [ref=e365]: vs
+            - generic [ref=e367]: Argelia
+          - generic [ref=e368]:
+            - spinbutton "Goles de Suiza" [ref=e369]
+            - spinbutton "Goles de Argelia" [ref=e370]
+            - textbox "Goleadores" [ref=e371]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e372] [cursor=pointer]:
+              - generic [ref=e373]: 💾
+              - text: Guardar
+          - generic [ref=e375]: BC Place Vancouver
+        - article [ref=e376]:
+          - generic [ref=e377]:
+            - generic [ref=e378]:
+              - generic [ref=e379]: ⏱
+              - generic [ref=e380]: 03 jul, 14:00
+            - generic [ref=e381]:
+              - generic [ref=e382]: ⏱
+              - text: Abierto
+          - generic [ref=e383]:
+            - generic [ref=e385]: Egipto
+            - generic [ref=e387]: vs
+            - generic [ref=e389]: Australia
+          - generic [ref=e390]:
+            - spinbutton "Goles de Egipto" [ref=e391]
+            - spinbutton "Goles de Australia" [ref=e392]
+            - textbox "Goleadores" [ref=e393]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e394] [cursor=pointer]:
+              - generic [ref=e395]: 💾
+              - text: Guardar
+          - generic [ref=e397]: Dallas Stadium
+        - article [ref=e398]:
+          - generic [ref=e399]:
+            - generic [ref=e400]:
+              - generic [ref=e401]: ⏱
+              - generic [ref=e402]: 03 jul, 18:00
+            - generic [ref=e403]:
+              - generic [ref=e404]: ⏱
+              - text: Abierto
+          - generic [ref=e405]:
+            - generic [ref=e407]: Argentina
+            - generic [ref=e409]: vs
+            - generic [ref=e411]: Cabo Verde
+          - generic [ref=e412]:
+            - spinbutton "Goles de Argentina" [ref=e413]
+            - spinbutton "Goles de Cabo Verde" [ref=e414]
+            - textbox "Goleadores" [ref=e415]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e416] [cursor=pointer]:
+              - generic [ref=e417]: 💾
+              - text: Guardar
+          - generic [ref=e419]: Miami Stadium
+        - article [ref=e420]:
+          - generic [ref=e421]:
+            - generic [ref=e422]:
+              - generic [ref=e423]: ⏱
+              - generic [ref=e424]: 03 jul, 21:30
+            - generic [ref=e425]:
+              - generic [ref=e426]: ⏱
+              - text: Abierto
+          - generic [ref=e427]:
+            - generic [ref=e429]: Colombia
+            - generic [ref=e431]: vs
+            - generic [ref=e433]: Ghana
+          - generic [ref=e434]:
+            - spinbutton "Goles de Colombia" [ref=e435]
+            - spinbutton "Goles de Ghana" [ref=e436]
+            - textbox "Goleadores" [ref=e437]:
+              - /placeholder: Goleadores separados por coma
+            - button "💾 Guardar" [ref=e438] [cursor=pointer]:
+              - generic [ref=e439]: 💾
+              - text: Guardar
+          - generic [ref=e441]: Kansas City Stadium
+  - complementary [ref=e442]:
+    - generic [ref=e443]:
+      - generic [ref=e444]:
+        - paragraph [ref=e445]: En vivo
+        - heading "Tabla" [level=2] [ref=e446]
+      - generic [ref=e447]: 🏅
+    - generic [ref=e448]:
+      - button "1 Annia 6" [ref=e449] [cursor=pointer]:
+        - generic [ref=e450]: "1"
+        - generic [ref=e451]: Annia
+        - strong [ref=e452]: "6"
+      - button "2 Admin Familiar 0" [ref=e453] [cursor=pointer]:
+        - generic [ref=e454]: "2"
+        - generic [ref=e455]: Admin Familiar
+        - strong [ref=e456]: "0"
+      - button "3 Papá 0" [ref=e457] [cursor=pointer]:
+        - generic [ref=e458]: "3"
+        - generic [ref=e459]: Papá
+        - strong [ref=e460]: "0"
