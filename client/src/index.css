@@ -450,6 +450,75 @@ select:focus {
   color: var(--ink);
 }
 
+.picks-table {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.picks-header {
+  display: grid;
+  grid-template-columns: 1fr 48px 48px 1fr;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--surface-alt);
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.picks-row {
+  display: grid;
+  grid-template-columns: 1fr 48px 48px 1fr;
+  gap: 8px;
+  padding: 7px 12px;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+
+.picks-row:hover {
+  background: var(--surface-alt);
+}
+
+.picks-name {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.picks-score {
+  text-align: center;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.picks-scorers {
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.picks-empty {
+  color: var(--ink-muted);
+  font-style: italic;
+}
+
+.picks-locked-msg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--surface-alt);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
 .leaderboard-panel {
   position: sticky;
   top: 18px;

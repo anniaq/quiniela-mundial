@@ -159,6 +159,25 @@ app.get('/api/predictions', authMiddleware, async (req, res) => {
   res.json(rows);
 });
 
+app.get('/api/predictions/all', authMiddleware, async (req, res) => {
+  const myId = req.user.id;
+  const { rows: users } = await pool.query('SELECT id, name FROM users ORDER BY name');
+  // Return predictions from all users only for matches that are locked or the requester has already predicted
+  const { rows: predictions } = await pool.query(
+    `SELECT p.match_id, p.user_id, u.name AS user_name, p.pred_score1, p.pred_score2, p.pred_scorers
+     FROM predictions p
+     JOIN users u ON u.id = p.user_id
+     WHERE p.match_id IN (
+       SELECT id FROM matches WHERE locked = TRUE
+       UNION
+       SELECT match_id FROM predictions WHERE user_id = $1
+     )
+     ORDER BY p.match_id, u.name`,
+    [myId]
+  );
+  res.json({ users, predictions });
+});
+
 app.post('/api/predictions/:match_id', authMiddleware, async (req, res) => {
   const { match_id } = req.params;
   const predScore1 = parseScore(req.body.pred_score1);

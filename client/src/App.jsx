@@ -1,20 +1,21 @@
-import React, { useEffect, useMemo, useState } from 'react';
-
-// Icon shims — replace lucide-react with simple emoji spans
-const Activity    = () => <span>⚡</span>;
-const CalendarClock = () => <span>📅</span>;
-const CheckCircle2 = () => <span>✅</span>;
-const Clock3      = () => <span>⏱</span>;
-const LockKeyhole = () => <span>🔒</span>;
-const LogOut      = () => <span>↩</span>;
-const Medal       = () => <span>🏅</span>;
-const RefreshCcw  = () => <span>🔄</span>;
-const Save        = () => <span>💾</span>;
-const ShieldCheck = () => <span>🛡</span>;
-const Table2      = () => <span>📊</span>;
-const Trophy      = () => <span>🏆</span>;
-const UserPlus    = () => <span>👤</span>;
-const UsersRound  = () => <span>👥</span>;
+﻿import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Activity,
+  CalendarClock,
+  CheckCircle2,
+  Clock3,
+  Eye,
+  LockKeyhole,
+  LogOut,
+  Medal,
+  RefreshCcw,
+  Save,
+  ShieldCheck,
+  Table2,
+  Trophy,
+  UserPlus,
+  UsersRound,
+} from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 const TOKEN_KEY = 'quiniela_token';
@@ -71,6 +72,7 @@ export default function App() {
   const [predictions, setPredictions] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [drafts, setDrafts] = useState({});
+  const [allPicksData, setAllPicksData] = useState({ users: [], predictions: [] });
   const [activeView, setActiveView] = useState('predictions');
   const [activeRound, setActiveRound] = useState('R32');
   const [loading, setLoading] = useState(Boolean(token));
@@ -142,17 +144,19 @@ export default function App() {
   async function loadEverything(options = {}) {
     if (!options.quiet) setLoading(true);
     try {
-      const [me, matchesData, predictionsData, leaderboardData] = await Promise.all([
+      const [me, matchesData, predictionsData, leaderboardData, allPicksResult] = await Promise.all([
         api('/api/auth/me'),
         api('/api/matches'),
         api('/api/predictions'),
         api('/api/leaderboard'),
+        api('/api/predictions/all'),
       ]);
 
       setUser(me);
       setMatches(matchesData);
       setPredictions(predictionsData);
       setLeaderboard(leaderboardData);
+      setAllPicksData(allPicksResult);
       if (!activeRound && matchesData[0]) setActiveRound(matchesData[0].round);
     } catch (error) {
       if (error.status === 401) logout();
@@ -270,6 +274,16 @@ export default function App() {
           <div className="empty-state">Cargando quiniela...</div>
         ) : activeView === 'leaderboard' ? (
           <LeaderboardView leaderboard={leaderboard} api={api} config={config} />
+        ) : activeView === 'picks' ? (
+          <AllPicksView
+            activeRound={activeRound}
+            allPicksData={allPicksData}
+            config={config}
+            matches={matches}
+            predictionsByMatch={predictionsByMatch}
+            rounds={rounds}
+            setActiveRound={setActiveRound}
+          />
         ) : activeView === 'admin' && user?.is_admin ? (
           <AdminPanel
             api={api}
@@ -402,6 +416,7 @@ function AuthScreen({ onAuth, apiBase }) {
 function Sidebar({ activeView, config, onLogout, setActiveView, user }) {
   const items = [
     { id: 'predictions', label: 'Predicciones', icon: CalendarClock },
+    { id: 'picks', label: 'Ver picks', icon: Eye },
     { id: 'leaderboard', label: 'Tabla', icon: Table2 },
     ...(user?.is_admin ? [{ id: 'admin', label: 'Admin', icon: ShieldCheck }] : []),
   ];
@@ -623,7 +638,7 @@ function LeaderboardView({ api, config, leaderboard }) {
             {detail.map((item) => (
               <div className="detail-row" key={item.match.id}>
                 <span>
-                  {config.roundNames?.[item.match.round] || item.match.round} · {item.match.team1} vs {item.match.team2}
+                  {config.roundNames?.[item.match.round] || item.match.round} Â· {item.match.team1} vs {item.match.team2}
                 </span>
                 <strong>{item.puntos ? `${item.puntos.total} pts` : 'Sin prediccion'}</strong>
               </div>
@@ -767,6 +782,102 @@ function AdminPanel({ api, config, matches, onSaved, onSync }) {
               <button className="icon-button" disabled={saving === match.id} onClick={() => saveMatch(match.id)} title="Guardar">
                 {saving === match.id ? <RefreshCcw size={16} /> : <Save size={16} />}
               </button>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function AllPicksView({ activeRound, allPicksData, config, matches, predictionsByMatch, rounds, setActiveRound }) {
+  const { users, predictions } = allPicksData;
+  const roundMatches = matches.filter((m) => m.round === activeRound);
+
+  const predsByMatch = useMemo(() => {
+    const map = {};
+    for (const p of predictions) {
+      map[p.match_id] ||= [];
+      map[p.match_id].push(p);
+    }
+    return map;
+  }, [predictions]);
+
+  return (
+    <section className="panel">
+      <div className="section-heading">
+        <div>
+          <p className="microcopy">Comparar</p>
+          <h2>Picks de todos</h2>
+        </div>
+        <div className="round-tabs">
+          {rounds.map((round) => (
+            <button key={round} className={activeRound === round ? 'active' : ''} onClick={() => setActiveRound(round)}>
+              {config.roundNames?.[round] || round}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="match-list">
+        {roundMatches.map((match) => {
+          const myPick = predictionsByMatch[match.id];
+          const visible = myPick || match.locked || match.status !== 'upcoming';
+          const picks = predsByMatch[match.id] || [];
+
+          return (
+            <article key={match.id} className={`match-row ${match.status}`}>
+              <div className="match-meta">
+                <div className="match-time">
+                  <Clock3 size={16} />
+                  <span>{formatDate(match.match_date)}</span>
+                </div>
+                <StatusPill match={match} />
+              </div>
+              <div className="teams-grid">
+                <TeamLabel team={match.team1} />
+                <div className="score-display"><span>vs</span></div>
+                <TeamLabel team={match.team2} align="right" />
+              </div>
+
+              {visible ? (
+                picks.length === 0 ? (
+                  <p className="microcopy" style={{ padding: '8px 0', color: 'var(--text-muted)' }}>
+                    Nadie ha predicho este partido aun.
+                  </p>
+                ) : (
+                  <div className="picks-table">
+                    <div className="picks-header">
+                      <span>Jugador</span>
+                      <span>{match.team1}</span>
+                      <span>{match.team2}</span>
+                      <span>Goleadores</span>
+                    </div>
+                    {users.map((u) => {
+                      const p = picks.find((pk) => pk.user_id === u.id);
+                      return (
+                        <div key={u.id} className="picks-row">
+                          <span className="picks-name">{u.name}</span>
+                          {p ? (
+                            <>
+                              <span className="picks-score">{p.pred_score1}</span>
+                              <span className="picks-score">{p.pred_score2}</span>
+                              <span className="picks-scorers">{arrayToText(p.pred_scorers) || '—'}</span>
+                            </>
+                          ) : (
+                            <span className="picks-empty" style={{ gridColumn: '2 / -1' }}>Sin prediccion</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              ) : (
+                <div className="picks-locked-msg">
+                  <LockKeyhole size={15} />
+                  <span>Llena tu prediccion para ver las de los demas</span>
+                </div>
+              )}
             </article>
           );
         })}

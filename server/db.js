@@ -286,13 +286,18 @@ async function lockStartedMatches() {
   const safeMinutes = Number.isFinite(minutes) && minutes >= 0 ? minutes : 0;
   const lockBefore = new Date(Date.now() + safeMinutes * 60 * 1000).toISOString();
 
+  // Lock all matches in a round when the first match of that round reaches kickoff.
+  // This ensures the whole round closes at once, not match by match.
   await pool.query(
     `UPDATE matches
      SET locked = TRUE, updated_at = NOW()
-     WHERE match_date IS NOT NULL
-       AND locked = FALSE
+     WHERE locked = FALSE
        AND status IN ('upcoming', 'live')
-       AND match_date <= $1`,
+       AND round IN (
+         SELECT DISTINCT round FROM matches
+         WHERE match_date IS NOT NULL
+           AND match_date <= $1
+       )`,
     [lockBefore]
   );
 }
