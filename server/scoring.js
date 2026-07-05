@@ -46,13 +46,29 @@ function ganador(score1, score2) {
   return 0;
 }
 
-function acertoGoleador(predichos = [], reales = []) {
-  const golesPredichos = toArray(predichos).map(normalizarNombre).filter(Boolean);
-  const golesReales = toArray(reales).map(normalizarNombre).filter(Boolean);
+// Aliases: nickname → canonical name (normalized, no accents, lowercase)
+const ALIASES = {
+  'kiki': 'mbappe',
+  'el dictador kiki': 'mbappe',
+  'dictador kiki': 'mbappe',
+  'pulga': 'messi',
+  'cr7': 'ronaldo',
+  'cr 7': 'ronaldo',
+};
 
-  return golesPredichos.some((predicho) =>
-    golesReales.some((real) => real === predicho || real.includes(predicho) || predicho.includes(real))
-  );
+function acertoGoleador(predichos = [], reales = []) {
+  const arr = toArray(predichos);
+  // Only the first predicted scorer counts
+  if (arr.length === 0) return false;
+  const primerPredicho = normalizarNombre(arr[0]);
+  const canonico = ALIASES[primerPredicho] || primerPredicho;
+  if (!canonico) return false;
+
+  const golesReales = toArray(reales).map(normalizarNombre).filter(Boolean);
+  return golesReales.some((real) => {
+    const realCanon = ALIASES[real] || real;
+    return realCanon === canonico || realCanon.includes(canonico) || canonico.includes(realCanon);
+  });
 }
 
 function normalizarNombre(value = '') {
