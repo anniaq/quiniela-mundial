@@ -91,6 +91,11 @@ export default function App() {
     [predictions]
   );
 
+  const bracketNames = useMemo(
+    () => computeBracketNames(matches, predictionsByMatch),
+    [matches, predictionsByMatch]
+  );
+
   const rounds = useMemo(() => {
     const seen = [];
     for (const match of matches) {
@@ -295,6 +300,7 @@ export default function App() {
         ) : (
           <PredictionsView
             activeRound={activeRound}
+            bracketNames={bracketNames}
             config={config}
             drafts={drafts}
             matches={currentRoundMatches}
@@ -475,6 +481,7 @@ function Sidebar({ activeView, config, onLogout, setActiveView, user }) {
 
 function PredictionsView({
   activeRound,
+  bracketNames,
   config,
   drafts,
   matches,
@@ -501,21 +508,27 @@ function PredictionsView({
       </div>
 
       <div className="match-list">
-        {matches.map((match) => (
-          <MatchPredictionRow
-            key={match.id}
-            draft={drafts[match.id] || {}}
-            match={match}
-            prediction={predictionsByMatch[match.id]}
-            savePrediction={savePrediction}
-            setDraft={(patch) =>
-              setDrafts((current) => ({
-                ...current,
-                [match.id]: { ...(current[match.id] || {}), ...patch },
-              }))
-            }
-          />
-        ))}
+        {matches.map((match) => {
+          const names = bracketNames[match.id];
+          const displayMatch = names
+            ? { ...match, team1: names.team1, team2: names.team2 }
+            : match;
+          return (
+            <MatchPredictionRow
+              key={match.id}
+              draft={drafts[match.id] || {}}
+              match={displayMatch}
+              prediction={predictionsByMatch[match.id]}
+              savePrediction={savePrediction}
+              setDraft={(patch) =>
+                setDrafts((current) => ({
+                  ...current,
+                  [match.id]: { ...(current[match.id] || {}), ...patch },
+                }))
+              }
+            />
+          );
+        })}
       </div>
     </section>
   );
@@ -1044,4 +1057,83 @@ function toDateTimeLocal(value) {
   const date = new Date(value);
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
   return date.toISOString().slice(0, 16);
+}
+
+// Bracket structure: which source matches feed each future round match.
+// QF match N ← winner of R16 (2N-1) and winner of R16 (2N)
+// SF match N ← winner of QF (2N-1) and winner of QF (2N)
+// FINAL      ← winner of SF 1 and winner of SF 2
+// 3RD        ← loser  of SF 1 and loser  of SF 2
+function computeBracketNames(allMatches, predictionsByMatch) {
+  const byKey = {};
+  for (const m of allMatches) {
+    byKey[`${m.round}_${m.match_number}`] = m;
+  }
+
+  function getM(round, num) {
+    return byKey[`${round}_${num}`] || null;
+  }
+
+  // Returns { team1, team2 } for the match identified by (round, matchNumber)
+  // using real results when available, otherwise the user's predictions.
+  function computeTeams(round, matchNumber) {
+    const match = getM(round, matchNumber);
+    if (!match) return { team1: 'Por definir', team2: 'Por definir' };
+
+    if (round === 'R32' || round === 'R16') {
+      return { team1: match.team1, team2: match.team2 };
+    }
+
+    let srcRound, i1, i2, wantLoser = false;
+    if (round === 'QF') { srcRound = 'R16'; i1 = matchNumber * 2 - 1; i2 = matchNumber * 2; }
+    else if (round === 'SF') { srcRound = 'QF'; i1 = matchNumber * 2 - 1; i2 = matchNumber * 2; }
+    else if (round === 'FINAL') { srcRound = 'SF'; i1 = 1; i2 = 2; }
+    else if (round === '3RD') { srcRound = 'SF'; i1 = 1; i2 = 2; wantLoser = true; }
+    else return { team1: match.team1, team2: match.team2 };
+
+    const src1Teams = computeTeams(srcRound, i1);
+    const src2Teams = computeTeams(srcRound, i2);
+    const src1 = getM(srcRound, i1);
+    const src2 = getM(srcRound, i2);
+
+    const pick = wantLoser ? loserOf : winnerOf;
+    return {
+      team1: pick(src1, src1Teams) || 'Por definir',
+      team2: pick(src2, src2Teams) || 'Por definir',
+    };
+  }
+
+  function winnerOf(match, teams) {
+    if (!match) return null;
+    // Real result takes priority
+    if (match.score1 !== null && match.score1 !== undefined &&
+        match.score2 !== null && match.score2 !== undefined) {
+      const adj = adjustedScore(match);
+      if (adj.score1 > adj.score2) return teams.team1;
+      if (adj.score2 > adj.score1) return teams.team2;
+      return null;
+    }
+    // Fall back to user's prediction
+    const pred = predictionsByMatch[match.id];
+    if (!pred) return null;
+    const s1 = Number(pred.pred_score1);
+    const s2 = Number(pred.pred_score2);
+    if (s1 > s2) return teams.team1;
+    if (s2 > s1) return teams.team2;
+    return null;
+  }
+
+  function loserOf(match, teams) {
+    const w = winnerOf(match, teams);
+    if (!w) return null;
+    return w === teams.team1 ? teams.team2 : teams.team1;
+  }
+
+  const result = {};
+  for (const m of allMatches) {
+    if (['QF', 'SF', 'FINAL', '3RD'].includes(m.round)) {
+      result[m.id] = computeTeams(m.round, m.match_number);
+    }
+  }
+  return result;
 }
